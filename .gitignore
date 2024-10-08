@@ -1,0 +1,5 @@
+# .gitignore 
+
+.env 
+
+/todo_app/main 
