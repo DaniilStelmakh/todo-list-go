@@ -70,7 +70,7 @@ func (s *Storage) Close() error {
 }
 
 // Ф-ия для изменения таблицы
-func (s *Storage) CreateTask(task apinext.Task) (int, error) {
+func (s *Storage) CreateTask(task *apinext.Task) (int, error) {
 	query := "INSERT INTO scheduler (date, title, comment, repeat) VALUES (?, ?, ?, ?)"
 
 	res, err := s.db.Exec(query, task.Date, task.Title, task.Comment, task.Repeat)
