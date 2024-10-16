@@ -14,8 +14,8 @@ type Service struct {
 
 // Интерфейс для реализации БД
 type StoreJobs interface {
-	CreateTask(task *apinext.Task) (int, error)
-	GetTaskById(id string) (*apinext.Task, error)
+	CreateTask(task apinext.Task) (int, error)
+	GetTaskById(id string) (apinext.Task, error)
 	GetTasks() ([]apinext.Task, error)
 	GetTasksBySearch(search string) ([]apinext.Task, error)
 	GetTasksByDate(date string) ([]apinext.Task, error)
@@ -52,7 +52,7 @@ func (s *Service) Add(date, title, comment, repeat string) (int, error) {
 		Repeat:  repeat,
 	}
 
-	return s.store.CreateTask(task)
+	return s.store.CreateTask(*task)
 }
 
 func (s *Service) GetAll(search string) ([]apinext.Task, error) {
@@ -82,13 +82,10 @@ func (s *Service) GetAll(search string) ([]apinext.Task, error) {
 func (s *Service) Get(id string) (*apinext.Task, error) {
 	task, err := s.store.GetTaskById(id)
 	if err != nil {
-		return nil, err
-	}
-	if task == nil {
 		return nil, fmt.Errorf("not found")
 	}
 
-	return task, nil
+	return &task, nil
 }
 
 func (s *Service) Update(task *apinext.Task) error {

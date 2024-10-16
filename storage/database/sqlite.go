@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
@@ -69,7 +70,7 @@ func (s *Storage) Close() error {
 }
 
 // Ф-ия для изменения таблицы
-func (s *Storage) CreateTask(task *apinext.Task) (int, error) {
+func (s *Storage) CreateTask(task apinext.Task) (int, error) {
 	query := "INSERT INTO scheduler (date, title, comment, repeat) VALUES (?, ?, ?, ?)"
 
 	res, err := s.db.Exec(query, task.Date, task.Title, task.Comment, task.Repeat)
@@ -86,19 +87,16 @@ func (s *Storage) CreateTask(task *apinext.Task) (int, error) {
 }
 
 // Ф-ия для получения задачи по id
-func (s *Storage) GetTaskById(id string) (*apinext.Task, error) {
+func (s *Storage) GetTaskById(id string) (apinext.Task, error) {
 	query := "SELECT * FROM scheduler WHERE id = ?"
 	row := s.db.QueryRow(query, id)
 	task := apinext.Task{}
 
-	if err := row.Scan(&task.Id, &task.Date, &task.Title, &task.Comment, &task.Repeat); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
-		return nil, err
+	err := row.Scan(&task.Id, &task.Date, &task.Title, &task.Comment, &task.Repeat)
+	if err != nil {
+		return apinext.Task{}, fmt.Errorf("failed scan from database: %w", err)
 	}
-
-	return &task, nil
+	return task, nil
 }
 
 // Ф-ия для получиния задачи

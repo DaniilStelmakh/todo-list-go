@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -204,7 +205,10 @@ func NextTask() http.HandlerFunc {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusOK)
 
-		w.Write([]byte(res))
+		_, err = w.Write([]byte(res))
+		if err != nil {
+			log.Printf("error while writing response: %v", err)
+		}
 	}
 }
 
