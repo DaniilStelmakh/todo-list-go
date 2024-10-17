@@ -74,6 +74,8 @@ func main() {
 
 	r.MethodFunc(http.MethodPost, "/api/task/done", handlers.DoneTask(taskService))
 
+	// r.MethodFunc(http.MethodPost, "/api/sigin", authenticator.Authenticator)
+
 	address := fmt.Sprintf(":%d", port)
 	if err := http.ListenAndServe(address, r); err != nil {
 		log.Fatalf("Server failed with err: %v\n", err)
