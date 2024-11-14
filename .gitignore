@@ -1,0 +1,5 @@
+# .gitignore 
+
+/todo_app/main 
+/internal/authenticator
+/storage/authuser
