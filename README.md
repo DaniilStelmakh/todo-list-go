@@ -1,4 +1,4 @@
-# go_final_project
+# todo_list_go
 
 ## Описание проекта
 
